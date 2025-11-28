@@ -6,6 +6,14 @@ from dt_computer_vision.ground_projection import GroundProjector
 from dt_computer_vision.ground_projection.types import GroundPoint
 
 
+# For vbot
+LEFT_SCALING = -2.0
+RIGHT_SCALING = 1.0
+
+# For bobby
+#  LEFT_SCALING = -5.0
+#  RIGHT_SCALING = 1.0
+
 
 def get_steer_matrix_left_lane_markings(shape: Tuple[int, int]) -> np.ndarray:
     """
@@ -31,7 +39,7 @@ def get_steer_matrix_left_lane_markings(shape: Tuple[int, int]) -> np.ndarray:
         steer_unit /= max_val
 
     # steer_matrix_left_lane[:, :width] = 1 # CHANGE ME
-    steer_matrix_left_lane[:, :width] = steer_unit
+    steer_matrix_left_lane[:, :width] = LEFT_SCALING * np.ones((height, width)) * steer_unit
 
     return steer_matrix_left_lane
 
@@ -61,7 +69,7 @@ def get_steer_matrix_right_lane_markings(shape: Tuple[int, int]) -> np.ndarray:
         steer_unit /= max_val
 
     # steer_matrix_right_lane[:, width:] = 1 # CHANGE ME
-    steer_matrix_right_lane[:, width:] = steer_unit # CHANGE ME
+    steer_matrix_right_lane[:, width:] = RIGHT_SCALING * np.ones((height, width)) * steer_unit # CHANGE ME
 
     return steer_matrix_right_lane
 
@@ -82,12 +90,39 @@ def detect_lane_markings(image: np.ndarray, projector: GroundProjector) -> Tuple
     # yellow_lower_hsv = np.array([0, 0, 0])  # CHANGE ME
     # yellow_upper_hsv = np.array([179, 255, 255])  # CHANGE ME
 
-    sigma = 2  # CHANGE ME - Gaussian blur sigma
-    threshold = 20  # CHANGE ME - minimum threshold for gradiant magnitude
-    white_lower_hsv = np.array([0, 0, 180])  # CHANGE ME - color thresholds
-    white_upper_hsv = np.array([180, 60, 255])  # CHANGE ME
-    yellow_lower_hsv = np.array([20, 80, 100])  # CHANGE ME
-    yellow_upper_hsv = np.array([35, 255, 255])  # CHANGE ME
+    #  sigma = 5  # CHANGE ME - Gaussian blur sigma
+    #  threshold = 50  # CHANGE ME - minimum threshold for gradiant magnitude
+    #  white_lower_hsv = np.array([0, 0, 130])  # CHANGE ME 
+    #  white_upper_hsv = np.array([160, 70, 255])  # CHANGE ME # 180, 70
+    #  yellow_lower_hsv = np.array([20, 80, 100])  # CHANGE ME # very good
+    #  yellow_upper_hsv = np.array([55, 255, 255])  # CHANGE ME
+
+    #  white_lower_hsv = np.array([0, 0, 127])  # CHANGE ME 
+    #  white_upper_hsv = np.array([179, 76, 255])  # CHANGE ME # 180, 70
+    #  yellow_lower_hsv = np.array([21, 102, 100])  # CHANGE ME
+    #  yellow_upper_hsv = np.array([63, 255, 255])  # CHANGE ME
+
+    #  white_lower_hsv = np.array([0, 0, 127]) # 128
+    #  white_upper_hsv = np.array([179, 77, 255])
+    #  yellow_lower_hsv = np.array([77, 102, 102])
+    #  yellow_upper_hsv = np.array([63, 255, 255])
+
+    # For bobby
+    sigma = 4  # CHANGE ME - Gaussian blur sigma
+    threshold = 50  # CHANGE ME - minimum threshold for gradiant magnitude
+    white_lower_hsv = np.array([0, 0, 127]) # 128
+    white_upper_hsv = np.array([179, 77, 255])
+    yellow_lower_hsv = np.array([21, 70, 70])  # CHANGE ME
+    yellow_upper_hsv = np.array([63, 255, 255])  # CHANGE ME
+
+
+    # for vbot
+    sigma = 5  # CHANGE ME - Gaussian blur sigma
+    threshold = 50  # CHANGE ME - minimum threshold for gradiant magnitude
+    white_lower_hsv = np.array([np.int32(round(179/255 * 0)), np.int32(round(2.55 * 0)), np.int32(round(2.55 * 50))])         # CHANGE ME
+    white_upper_hsv = np.array([np.int32(round(179/255 * 255)), np.int32(round(2.55 * 30)), np.int32(round(2.55 * 100))])   # CHANGE ME
+    yellow_lower_hsv = np.array([np.int32(round(179/255 * 30)), np.int32(round(2.55 * 40)), np.int32(round(2.55 * 40))])        # CHANGE ME
+    yellow_upper_hsv = np.array([np.int32(round(179/255 * 90)), np.int32(round(2.55 * 100)), np.int32(round(2.55 * 100))])  # CHANGE ME
 
 
     h, w, _ = image.shape

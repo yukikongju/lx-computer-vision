@@ -19,6 +19,7 @@ Start duckie in matrix
 > code: quackquack
 > dts code vnc -R bobbyvirt
 
+> docker -H bobbyvirt
 
 TBD
 > dts duckiebot keyboard_control bobbyvirt
@@ -26,3 +27,31 @@ TBD
 ```
 
 
+## Lane Following
+
+- [lane following demo](https://docs.duckietown.com/ente/duckietown-manual/40-demonstrations/lane-following-lf.html)
+
+
+```
+> dts duckiebot virtual start bobbyvirt
+> dts matrix run --standalone --embedded --map sandbox
+> dts matrix attach bobbyvirt map_0/vehicle_0
+> dts duckiebot demo --demo_name lane-following --duckiebot_name bobbyvirt --debug
+
+> dts duckiebot keyboard_control bobbyvirt
+> dts duckiebot image_viewer bobbyvirt
+
+
+TBD
+> dts gui bobbyvirt
+> rqt_image_view
+
+
+```
+
+
+
+
+```
+
+```
